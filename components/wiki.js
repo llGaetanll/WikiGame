@@ -36,8 +36,8 @@ const Wiki = ({ page, ...props }) => {
     // fetch(`https://en.wikipedia.org/wiki/${page}`).then((res) =>
     fetch(`/api/proxy?page=${pageName}`)
       .then((res) => res.json())
-      .then(({ page }) => {
-        setPage(parsePage(page));
+      .then(({ visualPage, parsedPage }) => {
+        setPage(parsePage(visualPage));
       })
       .catch((err) => err);
   }, [pageName]);
@@ -58,7 +58,22 @@ const Wiki = ({ page, ...props }) => {
     }
   }, [pageHTML]);
 
-  if (!pageHTML) return <CircularProgress />;
+  if (!pageHTML)
+    return (
+      <div
+        css={{
+          display: "flex",
+          flex: 1,
+          overflow: "auto",
+          background: "white",
+          boxSizing: "border-box",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    );
 
   return (
     <div
