@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.64",
     "@mui/material": "^5.2.8",
+    "cheerio": "^1.0.0-rc.10",
     "isomorphic-unfetch": "^3.1.0",
     "next": "12.1.4",
     "react": "18.0.0",
