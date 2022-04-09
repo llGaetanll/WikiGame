@@ -1,3 +1,4 @@
+import bot
 
 class Page:
     """
@@ -8,7 +9,7 @@ class Page:
         self.title = title
         self.url = "https://en.wikipedia.org/wiki/" + title
         self.text = None # query to get plaintext of article
-        self.links = [None] # manipulate text to get links
+        self.links = [None] # manipulate text to get links, save as titles
         self.backlinks = None # access the 'links to this page' in the tools on the sidebar
 
 
@@ -30,4 +31,9 @@ class Game:
         
         Should at some point access self.encountered to avoid loops.
          """
-        return "NOT IMPLEMENTED"
+        link_ranking = bot.rank_similarity(self.end, self.current_page.links)
+        for title, _ in link_ranking:
+            if title in self.encountered:
+                continue # avoiding loop
+            return title # return the first link that hasn't been encountered
+        return "FAILED" # if there are no new links
