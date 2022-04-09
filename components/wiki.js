@@ -33,7 +33,7 @@ const Wiki = ({ page, ...props }) => {
   const ref = useRef(null);
 
   useEffect(() => {
-    // fetch(`https://en.wikipedia.org/wiki/${page}`).then((res) =>
+    // proxy wikipedia page given the underscored pagename
     fetch(`/api/proxy?page=${pageName}`)
       .then((res) => res.json())
       .then(({ visualPage, parsedPage }) => {
@@ -42,17 +42,22 @@ const Wiki = ({ page, ...props }) => {
       .catch((err) => err);
   }, [pageName]);
 
+  // when the pagehtml changes, add an onclick event to all <a></a>
+  // tags as to not let them redirect us to the real wikipedia
   useEffect(() => {
     if (pageHTML && ref.current) {
+      // make an array copy of all links on the page
       const as = [...ref.current.querySelectorAll("a")];
 
       as.forEach((a) => {
+        // add event listener to prevent redirect
         a.addEventListener("click", (e) => {
           e.preventDefault();
 
+          // here we can access state!
           setPageName(a.title.replace(/ /g, "_"));
 
-          return false;
+          // return false;
         });
       });
     }
