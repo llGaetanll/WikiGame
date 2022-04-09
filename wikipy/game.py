@@ -28,23 +28,23 @@ class Game:
         self.start = path[0]
         self.target = path[-1]
         self.current_page = path[0]
-        self.encountered = [path[0]] # pages yet encountered
+        self.encountered = [path[0]] # pages encountered (as Plaintext objects)
     
-    def next_move(self):
+    def next_move(self, plaintext):
         """
         return the title of the next move page. This method should include (or at least call) the actual logic of the bot.
-        
-        Should at some point access self.encountered to avoid loops.
          """
+        # incorporating the newly received page
+        self.current_page = plaintext
+        self.encountered.append(plaintext)
+
         link_ranking = bot.rank_similarity(self.end, self.current_page.links)
-        
+
         for title, _ in link_ranking:
             if title == self.target:
                 return title # if the target is in the list of links, return it
             if title in self.encountered:
                 continue # avoiding loop
+            self.encountered.append(title)
             return title # return the first link that hasn't been encountered
         return "FAILED" # if there are no new links
-
-    def new_page(self, plaintext):
-        """incorporate the new page generated after playing a move into """
