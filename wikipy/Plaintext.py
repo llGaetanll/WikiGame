@@ -6,7 +6,7 @@ class Plaintext:
     def __init__(self, text):
         self.title = re.findall(r'\A(.*)From Wikipedia', text)
         self.title = self.title[0].strip().replace(' ','_')
-        self.titles = re.findall(r'\|\|(\S+)\|\|', text)
+        self.articles = re.findall(r'\|\|(\S+)\|\|', text)
         self.text = text.replace("||","")
 # %%
 file_name = "../CleanPages/World_War_II.txt"
@@ -19,7 +19,6 @@ pt = Plaintext(text)
 # %%
 pt.title
 # %%
-pt.titles
+pt.articles
 # %%
 pt.text
-# %%
