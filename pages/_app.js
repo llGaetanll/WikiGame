@@ -1,3 +1,5 @@
+import "../styles/wikipedia.css";
+
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />;
 }
