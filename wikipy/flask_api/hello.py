@@ -1,7 +1,13 @@
+# %%
+import json
 from flask import Flask
 app = Flask(__name__)
 
 
-@app.route("/")
-def hello_world():
-  return "Hello, World!"
+@app.route('/', methods=['POST'])
+def index():
+    return json.dumps({'name': 'alice',
+                       'email': 'alice@outlook.com'})
+
+
+app.run()
