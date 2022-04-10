@@ -1,4 +1,3 @@
-import string
 import fetch from "isomorphic-unfetch";
 import cheerio from "cheerio";
 import fs from "fs";
@@ -56,7 +55,9 @@ export default async function handler(req, res) {
 
   // format every link
   $("div#content a").each((_, a) => {
-    const href = $(a).attr("href");
+    const href = $(a)
+      .attr("href")
+      .replace(/\/wiki\//g, "");
     const text = $(a)
       .text()
       .replace(/[\,\.\:\!\?]/g, "");

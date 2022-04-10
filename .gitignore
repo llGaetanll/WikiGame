@@ -7,3 +7,5 @@ node_modules/
 .vercel
 
 wikipy/wiki-news-300d-1M.vec
+
+# wikipy/__pycache__
