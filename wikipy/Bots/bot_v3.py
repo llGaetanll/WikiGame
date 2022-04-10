@@ -4,10 +4,11 @@ import requests
 from bs4 import BeautifulSoup
 from gensim.models import KeyedVectors
 
-# bot no longer vists pages even too SIMILAR to ones it's already been to
+# bot no longer vists pages even too SIMILAR to previous pages
 
-# META PARAMETER
+# METAPARAMETER in [0,1]
 cutoff = 0.8
+
 
 # %%
 MODEL_BIN = 'Model/wiki-news-300d-1M.vec'
@@ -41,31 +42,42 @@ def tokenize_wikiterm(term):
     return tokens
 
 
-def rank_similarity(target, terms):
+
+def rank_similarity(target, terms, visited):
     target_tokens = target.split('_')
     target_tokens = list(filter(lambda x: x in model_keys, target_tokens))
     
     output = dict()
-    for title in terms:
-        title_tokens = title.split('_')
-        title_tokens = list(filter(lambda x: x in model_keys, title_tokens))
+    terms = list(filter(lambda x: not x in visited, terms))
+    for poten in terms:
+        poten_tokens = poten.split('_')
+        poten_tokens = list(filter(lambda x: x in model_keys, poten_tokens))
 
-        
+        similar = False
+
+        for prev in visited:
+            if similar:
+                continue
+            prev_tokens = prev.split('_')
+            prev_tokens = list(filter(lambda x: x in model_keys, prev_tokens))
+            if len(prev_tokens) == 0 or len(poten_tokens) == 0:
+                continue
+            similar = (cutoff < MODEL.n_similarity(prev_tokens, poten_tokens))
 
 
-        if len(title_tokens) == 0:
+        if similar or len(poten_tokens) == 0:
             continue
 
-        output[title] = MODEL.n_similarity(target_tokens, title_tokens)
+        output[poten] = MODEL.n_similarity(target_tokens, poten_tokens)
 
     return sorted(output.items(), key=lambda x: x[1], reverse=True)
 
 
 
 # %%
-def move(title, dest):
+def move(title, dest, visited):
     links = get_linked_pages(title)
-    link_ranking = rank_similarity(dest, links)
+    link_ranking = rank_similarity(dest, links, visited)
 
     return link_ranking[0][0]
 
@@ -78,12 +90,12 @@ def bot_walk(n, curr, dest, path):
     if curr == dest:
         return path
     else:
-        next = move(curr, dest)
+        next = move(curr, dest, path)
         return bot_walk(n-1, next, dest, path)
 
 
 
 # %%
-path = bot_walk(18, "Kim_Kardashian", "Philosophy", list())
+path = bot_walk(18, "Kim_Kardashian", "Albert_Einstein", list())
 print(path)
 
