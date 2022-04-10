@@ -5,3 +5,9 @@ node_modules/
 wikipy/wiki-news-300d-1M.vec
 
 .DS_Store
+enwiki-latest-iwlinks.sql
+enwiki-latest-iwlinks.sql.gz
+enwiki-latest-pagelinks.sql
+enwiki-latest-pagelinks.sql.gz
+wikipy/2017_eng_wiki_skipgram.zip
+wikipy/2017_eng_wiki_skipgram/meta.json
