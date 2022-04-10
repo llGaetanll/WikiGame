@@ -2,12 +2,17 @@
 
 node_modules/
 
-wikipy/wiki-news-300d-1M.vec
-
-wikipy/__pycache__/*
-
-wikipy/computed.d2v
-
-wikipy/computed.d2v.vectors.npy
-
 .DS_Store
+enwiki-latest-iwlinks.sql
+enwiki-latest-iwlinks.sql.gz
+enwiki-latest-pagelinks.sql
+enwiki-latest-pagelinks.sql.gz
+wikipy/2017_eng_wiki_skipgram.zip
+wikipy/2017_eng_wiki_skipgram/meta.json
+
+.vercel
+
+wikipy/wiki-news-300d-1M.vec
+wikipy/computed.d2v
+wikipy/computed.d2v.vectors.npy
+wikipy/__pycache__
