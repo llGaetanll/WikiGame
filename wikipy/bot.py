@@ -1,7 +1,9 @@
+
 from flask import Flask, request
 import bot
 import re
 import gensim.models
+
 
 # this file is not currently in the repo because its 2.26GB
 MODEL_BIN = "wiki-news-300d-1M.vec"
@@ -66,3 +68,7 @@ def move():
     # return "FAILED" # if there are no new links
 
     # return "Hello, World!"
+
+
+
+
