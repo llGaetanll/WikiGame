@@ -43,6 +43,17 @@ def rank_similarity(target, terms):
 
     return sorted(output.items(), key=lambda x: x[1], reverse=True)
 
+def rank_similarity_to_page(target, terms):
+    """returns a sorted list of (word, similarity) tuples, comparing to the plaintext of the target page. target should be a Plaintext object.
+
+    terms should be underscore separated titles
+    """
+    output = dict()
+    for title in terms:
+        output[title] = MODEL.n_similarity(target.text.split(' '), title.split('_'))
+
+    return sorted(output.items(), key=lambda x: x[1], reverse=True)
+    
 # API
 
 
