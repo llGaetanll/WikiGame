@@ -3,3 +3,5 @@
 node_modules/
 
 .DS_Store
+
+wikipy/wiki-news-300d-1M.vec
