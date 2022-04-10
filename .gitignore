@@ -4,4 +4,10 @@ node_modules/
 
 wikipy/wiki-news-300d-1M.vec
 
+wikipy/__pycache__/
+
+wikipy/computed.d2v
+
+wikipy/computed.d2v.vectors.npy
+
 .DS_Store
