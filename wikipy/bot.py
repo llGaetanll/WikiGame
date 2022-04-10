@@ -1,13 +1,16 @@
+# %%
 from flask import Flask, request
-import bot
+# import bot
 import re
 import gensim.models
+# %%
 
 # this file is not currently in the repo because its 2.26GB
 MODEL_BIN = "wiki-news-300d-1M.vec"
 
 # takes forever
 MODEL = gensim.models.KeyedVectors.load_word2vec_format(MODEL_BIN)
+# %%
 
 app = Flask(__name__)
 
@@ -30,18 +33,21 @@ def rank_similarity(target, terms):
 def move():
     body = request.json
 
-    # parsed page
-    page = body.page
+    print(body)
 
-    # extract all links from parsed page
-    links = re.findall(r'\|\|(\S+)\|\|', page)
+    # # parsed page
+    # page = body.page
 
-    # destination page name
-    dest = body.dest
+    # # extract all links from parsed page
+    # links = re.findall(r'\|\|(\S+)\|\|', page)
 
-    # compute ranking vector for links and destination
-    link_ranking = bot.rank_similarity(dest, links)
+    # # destination page name
+    # dest = body.dest
 
+    # # compute ranking vector for links and destination
+    # link_ranking = rank_similarity(dest, links)
+
+    return False
     # return the highest ranked title
     return link_ranking[0][0]
 

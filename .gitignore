@@ -3,3 +3,7 @@
 node_modules/
 
 .DS_Store
+
+.vercel
+
+wikipy/wiki-news-300d-1M.vec
