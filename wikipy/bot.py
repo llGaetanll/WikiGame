@@ -1,6 +1,5 @@
 # %%
 from flask import Flask, request
-# import bot
 import re
 import gensim.models
 # %%
@@ -14,15 +13,33 @@ MODEL = gensim.models.KeyedVectors.load_word2vec_format(MODEL_BIN)
 
 app = Flask(__name__)
 
+model_keys = MODEL.index_to_key
+
+
+def tokenize_wikiterm(term):
+    tokens = term.replace("(", "").replace(")", "").split()
+    tokens = [x for x in tokens if x in model_keys]
+    list(filter(lambda x: x in model_keys, tokens))
+
+    return tokens
+
 
 def rank_similarity(target, terms):
-    """returns a sorted list of (word, similarity) tuples.
-
+    """
+    returns a sorted list of (word, similarity) tuples.
     terms should be underscore separated titles
     """
+
+    target_tokens = tokenize_wikiterm(target)
+
     output = dict()
     for title in terms:
-        output[title] = MODEL.n_similarity(target, title.split('_'))
+        title_tokens = tokenize_wikiterm(title)
+
+        if len(title_tokens) == 0:
+            continue
+
+        output[title] = MODEL.n_similarity(target_tokens, title_tokens)
 
     return sorted(output.items(), key=lambda x: x[1], reverse=True)
 
@@ -31,33 +48,22 @@ def rank_similarity(target, terms):
 
 @app.route("/", methods=['GET'])
 def move():
-    body = request.json
+    body = request.get_json()
 
-    print(body)
+    # parsed page
+    page = body['page']
 
-    # # parsed page
-    # page = body.page
+    # destination page name
+    dest = body['dest']
 
-    # # extract all links from parsed page
-    # links = re.findall(r'\|\|(\S+)\|\|', page)
+    # extract all links from parsed page
+    links = re.findall(r'{{([^{}]*)\|([^{}]*)}}', page)
+    link_dict = {x[0]: x[1] for x in links}
 
-    # # destination page name
-    # dest = body.dest
+    # compute ranking vector for links and destination
+    best_link = rank_similarity(dest, link_dict.keys())[0][0]
 
-    # # compute ranking vector for links and destination
-    # link_ranking = rank_similarity(dest, links)
+    return link_dict[best_link]
 
-    return False
-    # return the highest ranked title
-    return link_ranking[0][0]
 
-    # for title, _ in link_ranking:
-    #     if title == dest:
-    #         return title # if the target is in the list of links, return it
-    #     # if title in self.encountered:
-    #     #     continue # avoiding loop
-    #     # self.encountered.append(title)
-    #     return title # return the first link that hasn't been encountered
-    # return "FAILED" # if there are no new links
-
-    # return "Hello, World!"
+app.run(port=3001)

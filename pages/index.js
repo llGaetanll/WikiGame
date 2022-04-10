@@ -8,7 +8,7 @@ const Index = () => {
       css={{ display: "flex", flex: 1, width: "100%", background: "#f6f6f6" }}
     >
       {/* <Wiki page="Meenakshi_Arora" css={frame} /> */}
-      <Wiki page="Michael_Jackson" css={[frame, { marginLeft: 0 }]} />
+      <Wiki page="Elizabeth_II" css={[frame, { marginLeft: 0 }]} />
       <Wiki page="United_Kingdom" css={[frame, { marginLeft: 0 }]} />
     </div>
   );

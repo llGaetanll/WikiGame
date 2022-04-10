@@ -56,8 +56,6 @@ const Wiki = ({ page, ...props }) => {
 
           // here we can access state!
           setPageName(a.title.replace(/ /g, "_"));
-
-          // return false;
         });
       });
     }
