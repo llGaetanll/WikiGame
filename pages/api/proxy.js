@@ -55,16 +55,18 @@ export default async function handler(req, res) {
 
   // format every link
   $("div#content a").each((_, a) => {
-    const href = $(a).attr("href");
-    const text = $(a).text();
+    const href = $(a)
+      .attr("href")
+      .replace(/\/wiki\//g, "");
+    const text = $(a)
+      .text()
+      .replace(/[\,\.\:\!\?]/g, "");
 
     // remove all the crap links
     if (rem_links.some((rx) => rx.test(href)) || !/^\/wiki\/\w+/.test(href))
       $(a).remove();
     else {
-      $(a).replaceWith(
-        $("<a>" + `||${href.replace(/\/wiki\//g, "")}||` + "</a>")
-      );
+      $(a).replaceWith($("<a>" + `{{${text}|${href}}}` + "</a>"));
     }
   });
 
@@ -72,7 +74,7 @@ export default async function handler(req, res) {
     .text()
     .replace(/ {2,}|\t+|\n+/g, " ")
     .trim();
-  const parsedPageHTML = $("div#content").html();
+  // const parsedPageHTML = $("div#content").html();
 
   // fs.writeFileSync(`./CleanPages/${req.query.page}.txt`, parsedPage);
 
